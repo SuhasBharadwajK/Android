@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".FirstPage">
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_marginBottom="165dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/button"
+        android:clickable="false"
+        android:onClick="clicked"
+        android:layout_below="@+id/csRev"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="76dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/csName"
+        android:height="80dp"
+        android:width="200dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="50dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/csRev"
+        android:height="80dp"
+        android:width="200dp"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/ratingBar"
+        android:layout_alignStart="@+id/csName" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SelectImage"
+        android:id="@+id/imageSelectButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
