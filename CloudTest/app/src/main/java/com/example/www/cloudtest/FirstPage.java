@@ -50,6 +50,7 @@ public class FirstPage extends ActionBarActivity {
     private ImageView imageView;
     EditText notifHeader;
     EditText notifBody;
+    TextView status;
     TextView tv;
 
     AmazonS3Client s3Client;
@@ -86,15 +87,17 @@ public class FirstPage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
-        Button b = (Button)findViewById(R.id.button);
+        //Button b = (Button)findViewById(R.id.button);
         Button imageButton = (Button)findViewById(R.id.imageSelectButton);
 
         imageView = (ImageView)findViewById(R.id.displayImage);
 
-        notifHeader = (EditText)findViewById(R.id.csName);
-        notifBody = (EditText)findViewById(R.id.csRev);
+        status = (TextView)findViewById(R.id.status);
 
-        tv = (TextView) findViewById(R.id.textView);
+        //notifHeader = (EditText)findViewById(R.id.csName);
+        //notifBody = (EditText)findViewById(R.id.csRev);
+
+        //tv = (TextView) findViewById(R.id.textView);
 
         credentialsProvider = new CognitoCachingCredentialsProvider(
                 getApplicationContext(),
@@ -106,7 +109,7 @@ public class FirstPage extends ActionBarActivity {
 
         transferUtility = new TransferUtility(s3Client, getApplicationContext());
 
-        b.setOnClickListener(new View.OnClickListener() {
+        /*b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int mNotificationId = 001;
@@ -119,15 +122,16 @@ public class FirstPage extends ActionBarActivity {
                 NotificationManager mNotifyMgr =  (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
-                /*TransferObserver observer = transferUtility.upload("http://suhasbucket.s3-website-ap-southeast-1.amazonaws.com/","newfile",new File(""));*/
+                *//*TransferObserver observer = transferUtility.upload("http://suhasbucket.s3-website-ap-southeast-1.amazonaws.com/","newfile",new File(""));*//*
 
             }
-        });
+        });*/
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                status.setText("");
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -181,17 +185,21 @@ public class FirstPage extends ActionBarActivity {
                     Upload upload = transferManager.upload("suhasbucket", fileName, stream, new ObjectMetadata());
                     //notifBody.append(result.toString());
                     upload.waitForCompletion();
+                    status.setText("Upload Success!");
                 }
                 catch (FileNotFoundException fie) {
                     //notifBody.setText("File not found");
                 }
                 catch (AmazonServiceException ase) {
+                    status.setText("Upload Failed!");
                     //notifHeader.setText(ase.getMessage());
                 }
                 catch (AmazonClientException ace) {
+                    status.setText("Upload Failed!");
                     //notifBody.setText(ace.getMessage());
                 }
                 catch (InterruptedException ie) {
+                    status.setText("Upload Failed!");
                     //notifBody.append(ie.getMessage());
                 }
 

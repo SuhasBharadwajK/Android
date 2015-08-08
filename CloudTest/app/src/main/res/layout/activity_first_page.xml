@@ -5,50 +5,43 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".FirstPage">
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ratingBar"
-        android:layout_marginBottom="165dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
-    <Button
+    <!--<Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="NOTIFY"
         android:id="@+id/button"
         android:clickable="false"
         android:onClick="clicked"
-        android:layout_below="@+id/csRev"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="76dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/csName"
-        android:height="80dp"
-        android:width="200dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="50dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/csRev"
-        android:height="80dp"
-        android:width="200dp"
-        android:layout_marginBottom="20dp"
-        android:layout_above="@+id/ratingBar"
-        android:layout_alignStart="@+id/csName" />
+        android:layout_marginBottom="70dp"
+        android:layout_above="@+id/imageSelectButton"
+        android:layout_centerHorizontal="true" />-->
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SelectImage"
+        android:text="Select Image"
         android:id="@+id/imageSelectButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/displayImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=""
+        android:id="@+id/status"
+        android:layout_above="@+id/imageSelectButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="52dp"
+        android:textSize="30dp"/>
+
 </RelativeLayout>
