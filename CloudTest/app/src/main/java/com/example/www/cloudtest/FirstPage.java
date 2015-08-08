@@ -48,56 +48,26 @@ public class FirstPage extends ActionBarActivity {
     private static final int SELECT_PICTURE = 1;
     private String imagePath;
     private ImageView imageView;
-    EditText notifHeader;
-    EditText notifBody;
+
     TextView status;
-    TextView tv;
 
     AmazonS3Client s3Client;
     CognitoCachingCredentialsProvider credentialsProvider;
 
     TransferUtility transferUtility;
-    /*CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-            getApplicationContext(),
-            "eu-west-1:c75328f5-1b77-469b-b531-9ba19d791b69", // Identity Pool ID
-            Regions.EU_WEST_1 // Region
-    );
 
-    AmazonS3Client s3Client = new AmazonS3Client();*/
-
-    /*TransferUtility transferUtility = new TransferUtility(s3Client, getApplicationContext());*/
-
-    NotificationCompat.Builder mBuilder =
-            new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.bell)
-                    .setContentTitle("Alert!")
-                    .setContentText("This is a sample alert!");
-
-
-
-
-
-    /*int mNotificationId = 001;
-    NotificationManager mNotifyMgr =  (NotificationManager) getSystemService(NOTIFICATION_SERVICE);*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
 
-        //Button b = (Button)findViewById(R.id.button);
         Button imageButton = (Button)findViewById(R.id.imageSelectButton);
 
         imageView = (ImageView)findViewById(R.id.displayImage);
 
         status = (TextView)findViewById(R.id.status);
-
-        //notifHeader = (EditText)findViewById(R.id.csName);
-        //notifBody = (EditText)findViewById(R.id.csRev);
-
-        //tv = (TextView) findViewById(R.id.textView);
 
         credentialsProvider = new CognitoCachingCredentialsProvider(
                 getApplicationContext(),
@@ -109,23 +79,7 @@ public class FirstPage extends ActionBarActivity {
 
         transferUtility = new TransferUtility(s3Client, getApplicationContext());
 
-        /*b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int mNotificationId = 001;
-                if (notifHeader.getText().toString() != null) {
-                    mBuilder.setContentTitle(notifHeader.getText().toString());
-                }
-                if(notifBody.getText().toString() != null) {
-                    mBuilder.setContentText(notifBody.getText().toString());
-                }
-                NotificationManager mNotifyMgr =  (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
-                *//*TransferObserver observer = transferUtility.upload("http://suhasbucket.s3-website-ap-southeast-1.amazonaws.com/","newfile",new File(""));*//*
-
-            }
-        });*/
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,10 +90,6 @@ public class FirstPage extends ActionBarActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-                //notifHeader.setText(imagePath);
-                //notifBody.setText("Done!");
-                //getUri().toString())
-                //TransferObserver observer = transferUtility.upload("http://suhasbucket.s3-website-ap-southeast-1.amazonaws.com/","newfile",new File();
 
 
             }
@@ -151,87 +101,39 @@ public class FirstPage extends ActionBarActivity {
             if (requestCode == SELECT_PICTURE) {
                 Uri selectedImageUri = data.getData();
                 imagePath = getPath(getApplicationContext(), selectedImageUri);
-                //notifHeader.setText(selectedImageUri.toString());
-                //tv.append(imagePath);
 
                 System.out.println("Image Path : " + imagePath);
-                /*final String docId = DocumentsContract.getDocumentId(selectedImageUri);
-                final String[] split = docId.split(":");
-                final String type = split[0];*/
-                /*if ("primary".equalsIgnoreCase(type)) {
-                    String s = Environment.getExternalStorageDirectory() + "/" + split[1];
-                    tv.setText(s);
-                }*/
-                //imageView.setImageURI(selectedImageUri);
-                //notifHeader.setText(imagePath);
-                //TransferObserver observer = transferUtility.upload("suhasbucket","newfile",new File(selectedImageUri.getPath()));
                 imageView.setImageURI(selectedImageUri);
                 String fileName = imagePath.split("/")[imagePath.split("/").length-1];
-                //notifHeader.append(fileName);
-                //File f = new File("/sdcard/Ringtones/hangouts_message.ogg");
                 ObjectMetadata metadata = new ObjectMetadata();
                 metadata.setContentEncoding("UTF-8");
                 TransferManager transferManager = new TransferManager(credentialsProvider);
-                //Upload upload = transferManager.upload("suhasbucket", "1.ogg", f, new ObjectMetadata());
                 FileInputStream stream;
-                BufferedInputStream bis;
 
                 try {
                     stream = new FileInputStream(imagePath);
-                    bis = new BufferedInputStream(stream);
-                    /*PutObjectRequest putObjectRequest = new PutObjectRequest("suhasbucket", "1.ogg", stream, new ObjectMetadata());
-                    PutObjectResult result = s3Client.putObject(putObjectRequest);*/
 
                     Upload upload = transferManager.upload("suhasbucket", fileName, stream, new ObjectMetadata());
-                    //notifBody.append(result.toString());
                     upload.waitForCompletion();
                     status.setText("Upload Success!");
                 }
                 catch (FileNotFoundException fie) {
-                    //notifBody.setText("File not found");
+
                 }
                 catch (AmazonServiceException ase) {
                     status.setText("Upload Failed!");
-                    //notifHeader.setText(ase.getMessage());
+
                 }
                 catch (AmazonClientException ace) {
                     status.setText("Upload Failed!");
-                    //notifBody.setText(ace.getMessage());
+
                 }
                 catch (InterruptedException ie) {
                     status.setText("Upload Failed!");
-                    //notifBody.append(ie.getMessage());
-                }
 
-
-                try {
-                    //PutObjectRequest putObjectRequest = new PutObjectRequest("suhasbucket/", "1.ogg", stream, new ObjectMetadata());
-                    //s3Client.putObject("suhasbucket","newfIIile",new File(selectedImageUri.getPath()));
-                    //s3Client.putObject("suhasbucket",f.getName(), f);
-                    //TransferObserver observer = transferUtility.upload("suhasbucket",f.getName(), f);
-
-                    //observer.waitFo
                 }
-                catch (AmazonServiceException ase) {
-                    //notifHeader.setText(ase.getMessage());
-                }
-                catch (AmazonClientException ace) {
-                    //notifBody.setText(ace.getMessage());
-                }
-                //tv.setText(selectedImageUri.getPath());
-                //tv.setText(getRealPathFromURI(selectedImageUri));
-                //notifBody.setText(selectedImageUri.getPath());
             }
         }
-    }
-
-    public String getPath1(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        //tv.setText(cursor.getString(column_index));
-        return cursor.getString(column_index);
     }
 
     public static String getPath(final Context context, final Uri uri) {
@@ -354,61 +256,6 @@ public class FirstPage extends ActionBarActivity {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    /*public Uri getUri(Intent i) {
-
-        return i.getData();
-
-    }*/
-
-    /*public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }*/
-
-    /*public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }*/
-
-    public String getRealPath(Uri selectedImage) {
-        String wholeID = DocumentsContract.getDocumentId(selectedImage);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-        //return id;
-        String[] column = { MediaStore.Images.Media.DATA };
-        return column[0];
-        /*
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = getContentResolver().
-                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        column, sel, new String[]{ id }, null);
-
-        String filePath = "";
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        return filePath;*/
-        //setImageFromIntent(filePath);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -431,8 +278,4 @@ public class FirstPage extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /*public void clicked() {
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
-    }*/
 }
